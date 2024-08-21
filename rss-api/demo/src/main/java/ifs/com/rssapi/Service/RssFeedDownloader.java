@@ -100,19 +100,19 @@ public class RssFeedDownloader {
     }
     private LocalDateTime parsePubDate(String pubDate) {
         try {
-            // NOVO -> Tentar primeiro com ZonedDateTime
+
             DateTimeFormatter zonedFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(pubDate, zonedFormatter);
             return zonedDateTime.toLocalDateTime();
         } catch (DateTimeParseException e) {
-            // Se falhar, tentar com OffsetDateTime
+
             try {
                 DateTimeFormatter offsetFormatter = DateTimeFormatter.RFC_1123_DATE_TIME;
                 OffsetDateTime offsetDateTime = OffsetDateTime.parse(pubDate, offsetFormatter);
                 return offsetDateTime.toLocalDateTime();
             } catch (DateTimeParseException e2) {
                 e2.printStackTrace();
-                return LocalDateTime.now(); // Caso haja erro, retorna a data atual
+                return LocalDateTime.now();
             }
         }
     }

@@ -22,11 +22,11 @@ public class PreferenciaController {
         return ResponseEntity.ok(preferencia);
     }
 
-        @GetMapping("/{usuarioId}")
-        public ResponseEntity<UsuarioPreferenciasDTO> getUsuarioPreferencias(@PathVariable Long usuarioId) {
-            UsuarioPreferenciasDTO usuarioPreferencias = preferenciaService.getUsuarioPreferencias(usuarioId);
-            return ResponseEntity.ok(usuarioPreferencias);
-        }
+    @GetMapping("/{usuarioId}")
+    public ResponseEntity<UsuarioPreferenciasDTO> getUsuarioPreferencias(@PathVariable Long usuarioId) {
+        UsuarioPreferenciasDTO usuarioPreferencias = preferenciaService.getUsuarioPreferencias(usuarioId);
+        return ResponseEntity.ok(usuarioPreferencias);
+    }
 
 
 

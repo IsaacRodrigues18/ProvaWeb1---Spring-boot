@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
+    UsuarioEntity findByLogin(String login);
 
-    @NonNull
-    List<UsuarioEntity> findByEmail(@NonNull String email);
 
-    @NonNull
-    List<UsuarioEntity> findByLogin(@NonNull String login);
 
-    @NonNull
-    Optional<UsuarioEntity> findById(@NonNull Long id);
+
 }

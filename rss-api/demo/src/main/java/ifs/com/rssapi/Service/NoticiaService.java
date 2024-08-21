@@ -33,16 +33,13 @@ public class NoticiaService  {
         noticia.setImageUrl((String) resultado[3]);
         noticia.setLink((String) resultado[4]);
         noticia.setTitulo((String) resultado[5]);
-        noticia.setCategoria(null);  // Map category if needed
+        noticia.setCategoria(null);
         return noticia;
     }
 
     public Optional<NoticiaEntity> buscarNoticiaPorId(Long id) {
         return noticiaRepository.findById(id);
     }
-
-
-
 
     public boolean existsByLink(String link) {
         return noticiaRepository.existsByLink(link);
