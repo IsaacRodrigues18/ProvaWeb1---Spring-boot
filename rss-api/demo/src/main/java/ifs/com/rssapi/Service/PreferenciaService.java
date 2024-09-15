@@ -4,6 +4,7 @@ package ifs.com.rssapi.Service;
 import ifs.com.rssapi.Dto.PreferenciaDTO;
 import ifs.com.rssapi.Dto.UsuarioPreferenciasDTO;
 import ifs.com.rssapi.Model.CategoriaEntity;
+import ifs.com.rssapi.Model.NoticiaEntity;
 import ifs.com.rssapi.Model.PreferenciaEntity;
 import ifs.com.rssapi.Model.UsuarioEntity;
 import ifs.com.rssapi.Repository.CategoriaRepository;
@@ -12,7 +13,9 @@ import ifs.com.rssapi.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,9 @@ public class PreferenciaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private NoticiaService noticiaService;
 
 
 
@@ -53,16 +59,18 @@ public class PreferenciaService {
             UsuarioEntity usuario = usuarioOpt.get();
             List<PreferenciaEntity> preferencias = preferenciaRepository.findByUsuarioEntityId(usuarioId);
 
-            List<String> categorias = preferencias.stream()
-                    .map(preferencia -> preferencia.getCategoriaEntity().getNomeCategoria())
-                    .collect(Collectors.toList());
+            Map<String, List<NoticiaEntity>> categoriasComNoticias = new HashMap<>();
 
-            return new UsuarioPreferenciasDTO(usuario.getNome(), categorias);
+            for (PreferenciaEntity preferencia : preferencias) {
+                String nomeCategoria = preferencia.getCategoriaEntity().getNomeCategoria();
+                List<NoticiaEntity> noticias = noticiaService.listarMaisRecentesPorCategoria(preferencia.getCategoriaEntity().getIdCategoria());
+                categoriasComNoticias.put(nomeCategoria, noticias);
+            }
+
+            return new UsuarioPreferenciasDTO(usuario.getNome(), categoriasComNoticias);
         } else {
             throw new RuntimeException("Usuário não encontrado");
         }
-
-
     }
 
 }

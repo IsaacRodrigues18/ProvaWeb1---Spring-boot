@@ -1,5 +1,6 @@
 package ifs.com.rssapi.Service;
 
+import ifs.com.rssapi.Dto.LoginDto;
 import ifs.com.rssapi.Dto.UsuarioDto;
 import ifs.com.rssapi.Model.UsuarioEntity;
 import ifs.com.rssapi.Repository.UsuarioRepository;
@@ -42,5 +43,30 @@ public class UsuarioService {
         );
     }
 
+    public boolean login(LoginDto loginDto) {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(loginDto.getLogin());
+
+        if (usuario == null) {
+            return false;  // Usuário não encontrado
+        }
+
+        return passwordEncoder.matches(loginDto.getSenha(), usuario.getSenha());  // Verifica se a senha está correta
     }
+
+    public UsuarioEntity obterUsuarioPorLogin(String login) {
+        return usuarioRepository.findByLogin(login);  // Método para buscar o usuário pelo login
+    }
+
+
+
+    //VERSÃO DE LOGIN ESTÁVEL - PARTE 3
+    /*public boolean login(LoginDto loginDto) {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(loginDto.getLogin());
+        if (usuario == null) {
+            return false;  // Usuário não encontrado
+        }
+        return passwordEncoder.matches(loginDto.getSenha(), usuario.getSenha()); // Verifica se a senha é válida
+    }*/
+
+}
 
